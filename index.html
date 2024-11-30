@@ -10,40 +10,97 @@
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            background: linear-gradient(135deg, #f0f8ff, #ffe4e1);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
             color: #333;
-            overflow: hidden;
-            transition: background-color 1s ease; /* Smooth transition for background color */
+            transition: background-color 1s ease;
         }
 
         h1 {
             color: #1976d2;
             font-size: 3rem;
-            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             margin-top: 2rem;
             text-align: center;
             letter-spacing: 1px;
         }
 
-        /* Translator Box Styles */
-        .translator-container {
-            max-width: 650px;
-            width: 100%;
-            margin-top: 20px;
-            padding: 40px;
+        /* Lock Container Styles */
+        .lock-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 3rem;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-            background-color: #ffffff;
-            position: relative;
-            display: none; /* Initially hidden */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 400px;
         }
 
-        label {
+        .lock-container label {
+            color: #555;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lock-container input, .lock-container button {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .lock-container input:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+            outline: none;
+        }
+
+        .lock-container button {
+            background-color: #1976d2;
+            color: white;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .lock-container button:hover {
+            background-color: #1565c0;
+            transform: scale(1.05);
+        }
+
+        /* Translator Container Styles */
+        .translator-container {
+            max-width: 700px;
+            width: 90%;
+            margin-top: 2rem;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .translator-container label {
             display: block;
             margin-top: 20px;
             color: #555;
@@ -51,23 +108,24 @@
             font-size: 1.2rem;
         }
 
-        input, button, #result {
+        .translator-container input, .translator-container button, #result {
             width: 100%;
             padding: 15px 20px;
             margin: 15px 0;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 1.1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        input:focus, button:focus, #result:focus {
+        .translator-container input:focus, .translator-container button:focus, #result:focus {
             outline: none;
             border-color: #1976d2;
             box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
         }
 
-        button {
+        .translator-container button {
             background-color: #1976d2;
             color: white;
             font-size: 1.2rem;
@@ -77,13 +135,13 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        button:hover {
+        .translator-container button:hover {
             background-color: #1565c0;
             transform: scale(1.05);
         }
 
         #result {
-            background-color: #f0f0f0;
+            background-color: #f0f8ff;
             color: #333;
             min-height: 60px;
             display: flex;
@@ -93,23 +151,26 @@
             border: 2px dashed #1976d2;
         }
 
-        /* Lock Input Styles */
-        .lock-container {
+        .button-group {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
+        /* Footer Styles */
         .footer {
             margin-top: 50px;
             font-size: 1.1rem;
             color: #fff;
             text-align: center;
             position: relative;
-            padding: 10px 0;
+            padding: 15px 0;
             background-color: #1976d2;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
+            width: 90%;
+            max-width: 700px;
         }
 
         .note {
@@ -117,17 +178,17 @@
             top: 0;
             left: -100%;
             width: 200%;
-            height: 80px;
+            height: 60px;
             background: linear-gradient(90deg, #ff80ab, #d5006d);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 500;
-            animation: noteAnimation 8s linear infinite; /* Slower animation speed */
+            animation: noteAnimation 10s linear infinite;
             z-index: 1;
-            opacity: 0.9;
+            opacity: 0.85;
             letter-spacing: 1px;
         }
 
@@ -140,6 +201,21 @@
             }
             100% {
                 left: -100%;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .translator-container, .lock-container, .footer {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
             }
         }
     </style>
@@ -171,68 +247,74 @@
         <div class="note">DON'T SHARE THIS DECODER TO ANYONE WITHOUT MY PERMISSION</div>
     </div>
 
+    <!-- CryptoJS Library for SHA-256 hashing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
     <script>
-        const correctPassword = "060502";
+        // Obfuscated Passwords using Base64 Encoding
+        const encodedPasswords = [
+            "NjI1Mjk=", // Base64 for "62529"
+            "TUlSQQ=="  // Base64 for "MIRA"
+        ];
 
-        // Show the lock input on page load
-        document.getElementById("lockContainer").style.display = "flex";
+        // Function to decode Base64
+        function decodeBase64(encoded) {
+            return atob(encoded);
+        }
 
+        // Unlock Function
         function unlock() {
-            const inputPassword = document.getElementById("passwordInput").value;
-            if (inputPassword === correctPassword) {
+            const inputPassword = document.getElementById("passwordInput").value.trim();
+            const encodedInput = btoa(inputPassword); // Encode user input
+
+            if (encodedPasswords.includes(encodedInput)) {
                 document.getElementById("lockContainer").style.display = "none";
                 document.getElementById("translatorContainer").style.display = "block";
+                document.getElementById("passwordInput").value = ""; // Clear input
             } else {
                 alert("Incorrect password! Please try again.");
+                document.getElementById("passwordInput").value = ""; // Clear input
             }
         }
 
-        // Function to handle translation
+        // Translation Dictionaries
+        const translationDictForward = {
+            'a': 'ж', 'b': 'и', 'c': 'ш', 'd': 'ф', 'e': 'г',
+            'f': 'х', 'g': 'й', 'h': 'щ', 'i': 'з', 'j': 'ц',
+            'k': 'в', 'l': 'л', 'm': 'м', 'n': 'р', 'o': 'к',
+            'p': 'т', 'q': 'н', 'r': 'с', 's': 'ь', 't': 'ю',
+            'u': 'э', 'v': 'ъ', 'w': 'я', 'x': 'я', 'y': 'о',
+            'z': 'б'
+        };
+
+        const translationDictReverse = {};
+        for (const [key, value] of Object.entries(translationDictForward)) {
+            // Ensure unique reverse mappings
+            if (!translationDictReverse[value]) {
+                translationDictReverse[value] = key;
+            }
+        }
+
+        // Function to Handle Translation
         function translateCode(direction) {
-            var inputCode = document.getElementById("codeInput").value;
+            const inputCode = document.getElementById("codeInput").value;
+            const translationDict = direction === 'forward' ? translationDictForward : translationDictReverse;
 
-            // Translation dictionary for English to random Russian letters (Forward)
-            var translationDictForward = {
-                'a': 'ж', 'b': 'и', 'c': 'ш', 'd': 'ф', 'e': 'г',
-                'f': 'х', 'g': 'й', 'h': 'щ', 'i': 'з', 'j': 'ц',
-                'k': 'в', 'l': 'л', 'm': 'м', 'n': 'р', 'o': 'к',
-                'p': 'т', 'q': 'н', 'r': 'с', 's': 'ь', 't': 'ю',
-                'u': 'э', 'v': 'ъ', 'w': 'ъ', 'x': 'я', 'y': 'о',
-                'z': 'б'
-            };
+            let translatedCode = "";
+            for (let char of inputCode) {
+                const lowerCaseChar = char.toLowerCase();
+                const translatedChar = translationDict[lowerCaseChar] || char;
 
-            // Reverse translation dictionary for random Russian letters to English
-            var translationDictReverse = {
-                'ж': 'a', 'и': 'b', 'ш': 'c', 'ф': 'd', 'г': 'e',
-                'х': 'f', 'й': 'g', 'щ': 'h', 'з': 'i', 'ц': 'j',
-                'в': 'k', 'л': 'l', 'м': 'm', 'р': 'n', 'к': 'o',
-                'т': 'p', 'н': 'q', 'с': 'r', 'ь': 's', 'ю': 't',
-                'э': 'u', 'ъ': 'v', 'ъ': 'w', 'я': 'x', 'о': 'y',
-                'б': 'z'
-            };
-
-            // Select the appropriate translation dictionary
-            var translationDict = (direction === 'forward') ? translationDictForward : translationDictReverse;
-
-            var translatedCode = "";
-            for (var i = 0; i < inputCode.length; i++) {
-                var char = inputCode[i];
-                var lowerCaseChar = char.toLowerCase();
-                var translatedChar = translationDict[lowerCaseChar] || char;
-
-                // Maintain the original case
-                if (char === char.toUpperCase()) {
-                    translatedChar = translatedChar.toUpperCase();
-                }
-
-                translatedCode += translatedChar;
+                translatedCode += (char === char.toUpperCase() && translationDict[lowerCaseChar]) 
+                    ? translatedChar.toUpperCase() 
+                    : translatedChar;
             }
 
             document.getElementById("result").innerHTML = "Translated Text: " + translatedCode;
-            window.translatedCode = translatedCode; // Store the translated code globally
+            window.translatedCode = translatedCode;
         }
 
-        // Function to copy to clipboard
+        // Function to Copy Translated Text to Clipboard
         function copyToClipboard() {
             if (window.translatedCode) {
                 navigator.clipboard.writeText(window.translatedCode)
@@ -240,20 +322,20 @@
                     alert("Translated text has been copied to the clipboard!");
                 })
                 .catch(err => {
-                    console.error('Error copying text to clipboard', err);
+                    console.error("Error copying text to clipboard", err);
                 });
             } else {
                 alert("No translated text available to copy!");
             }
         }
 
-        // Function to change background color every 15 seconds
+        // Background Color Rotation
         let colors = ["#f0f8ff", "#ffe4e1", "#e6e6fa", "#ffe5b4"];
         let currentColorIndex = 0;
 
         function changeBackgroundColor() {
             document.body.style.backgroundColor = colors[currentColorIndex];
-            currentColorIndex = (currentColorIndex + 1) % colors.length; // Cycle through colors
+            currentColorIndex = (currentColorIndex + 1) % colors.length;
         }
 
         setInterval(changeBackgroundColor, 15000); // Change color every 15 seconds
