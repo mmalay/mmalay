@@ -1,1 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaynguage Translator</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        input, button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+        input {
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        #translatorContainer {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #translatorContainer input, #translatorContainer button {
+            margin-top: 15px;
+        }
+
+        #result {
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.2rem;
+        }
+
+        footer {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Malaynguage Translator</h1>
+        <div id="lockContainer">
+            <p>Enter Password to Unlock:</p>
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button onclick="unlock()">Unlock</button>
+        </div>
+        <div id="translatorContainer">
+            <label for="codeInput">Enter Text to Translate:</label>
+            <input type="text" id="codeInput" placeholder="Type text here...">
+            <button onclick="translateCode('forward')">English to Malaynguage</button>
+            <button onclick="translateCode('reverse')">Malaynguage to English</button>
+            <div id="result">Translation will appear here...</div>
+            <button onclick="copyToClipboard()">Copy Translation</button>
+        </div>
+    </div>
+    <footer>&copy; 2024 Malaynguage Translator</footer>
+
+    <script>
+        // Secure Passwords (Using hashes for better security)
+        const hashedPasswords = [
+            "ec3fbee76d44d8b2b90a6a4c59e0c3b5", // MD5 for "62529"
+            "248f1c622ee7eb2cd2e7a607ae48b05b"  // MD5 for "MIRA"
+        ];
+
+        // Unlock Function
+        function unlock() {
+            const inputPassword = document.getElementById("passwordInput").value.trim();
+            const inputHash = CryptoJS.MD5(inputPassword).toString();
+
+            if (hashedPasswords.includes(inputHash)) {
+                document.getElementById("lockContainer").style.display = "none";
+                document.getElementById("translatorContainer").style.display = "block";
+            } else {
+                alert("Incorrect password. Please try again!");
+            }
+        }
+
+        // Translation Logic
+        function translateCode(direction) {
+            const inputCode = document.getElementById("codeInput").value.trim();
+
+            if (!inputCode) {
+                alert("Please enter some text for translation.");
+                return;
+            }
+
+            const translationDictForward = {
+                'a': 'ж', 'b': 'и', 'c': 'ш', 'd': 'ф', 'e': 'г',
+                'f': 'х', 'g': 'й', 'h': 'щ', 'i': 'з', 'j': 'ц',
+                'k': 'в', 'l': 'л', 'm': 'м', 'n': 'р', 'o': 'к',
+                'p': 'т', 'q': 'н', 'r': 'с', 's': 'ь', 't': 'ю',
+                'u': 'э', 'v': 'ъ', 'w': 'ъ', 'x': 'я', 'y': 'о',
+                'z': 'б'
+            };
+
+            const translationDictReverse = Object.fromEntries(
+                Object.entries(translationDictForward).map(([key, value]) => [value, key])
+            );
+
+            const translationDict = (direction === 'forward') ? translationDictForward : translationDictReverse;
+
+            let translatedText = '';
+            for (let char of inputCode) {
+                const isUpperCase = char === char.toUpperCase();
+                const translatedChar = translationDict[char.toLowerCase()] || char;
+                translatedText += isUpperCase ? (translatedChar || char).toUpperCase() : translatedChar || char;
+            }
+
+            document.getElementById("result").textContent = `Translation: ${translatedText}`;
+            window.translatedText = translatedText;
+        }
+
+        // Copy to Clipboard
+        function copyToClipboard() {
+            if (window.translatedText) {
+                navigator.clipboard.writeText(window.translatedText)
+                    .then(() => alert("Copied to clipboard!"))
+                    .catch(err => console.error("Error copying text: ", err));
+            } else {
+                alert("No translation to copy!");
+            }
+        }
+    </script>
+    <!-- CryptoJS for secure hashing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</body>
+</html>
